@@ -1,14 +1,15 @@
+
 <blog>
-   <blogentry>
-   		<id>1</id>
+    <blogentry>
+        <id>1</id>
         <title>who knows</title>
         <body>[b]asdsad2[/b]sadfadsdasfdasfdas</body>
         <date>21.01.2012</date>
         <date_unicode>6051619864</date_unicode>
         <sender_id>13</sender_id>
     </blogentry>
-   <blogentry>
-   		<id>2</id>
+    <blogentry>
+        <id>2</id>
         <title>who knows2</title>
         <body>sadfadsdasfdasfdas</body>
         <date>21.01.2012</date>
@@ -16,6 +17,6 @@
         <sender_id>13 </sender_id>
     </blogentry>
     <rule>
-    <ai>id</ai>
+        <ai>id</ai>
     </rule>
 </blog>

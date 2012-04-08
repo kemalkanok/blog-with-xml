@@ -230,7 +230,7 @@
 	<div id="container" >
 		<h1><a href="">Welcome to xml-blog</a></h1>
 		<div id="body">
-	{blog_entries}
+                    {blog_entries}
 			<div class="container" id="blog_entry_{id}">
 			    <h1>
 			    <a href="blogentry/{id}">{title}</a> 
