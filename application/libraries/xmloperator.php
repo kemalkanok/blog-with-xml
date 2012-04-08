@@ -22,7 +22,10 @@ class xmloperator {
         }
         return $array;
     }
-
+    public function where()
+    {
+        
+    }
 }
 
 /* End of file Someclass.php */
