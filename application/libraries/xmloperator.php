@@ -4,8 +4,8 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class xmloperator {
-
-    public function read($filename, $table, $ids, $limit = null) {
+    
+    private function read($filename, $table, $ids, $limit = null) {
         $doc = new DOMDocument();
         $doc->load($filename);
         $books = $doc->getElementsByTagName($table);
@@ -22,9 +22,19 @@ class xmloperator {
         }
         return $array;
     }
-    public function where()
+    public function xml_sql($filename,$table,$string)
     {
         
+        $str=explode(' ', $string);
+        if( strtolower($str[0])=="select")
+        {
+            $i=1;
+            while($str[$i]=="")
+                $i++;
+            $str[$i]=  explode(",", $str[$i]);
+            return $this->read($filename,$table,$str[$i]);
+            
+        }
     }
 }
 

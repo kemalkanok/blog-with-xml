@@ -28,7 +28,8 @@ class Welcome extends CI_Controller {
 
     public function index() {
 
-        $array["blog_entries"] = $this->xmloperator->read("blog_entries.xml", "blogentry", array("id", "title", "body", "date", "sender_id"));
+        //array["blog_entries"] = $this->xmloperator->read("blog_entries.xml", "blogentry", array("id", "title", "body", "date", "sender_id"));
+        $array["blog_entries"]=$this->xmloperator->xml_sql("blog_entries.xml", "blogentry","select id,title,body,date,sender_id");
         foreach ($array["blog_entries"] as $key => $value) {
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $array["blog_entries"][$key]["body"]);
         }
@@ -52,6 +53,7 @@ class Welcome extends CI_Controller {
                 break;
             case 'login_prompt':
                 //echo 1;
+                
                 $doc = new DOMDocument();
                 $doc->load('users.xml');
                 $books = $doc->getElementsByTagName("user");
@@ -91,30 +93,16 @@ class Welcome extends CI_Controller {
     public function blogentry($id) {
 
         
-        $doc = new DOMDocument();
-        
-        $doc->load('blog_entries.xml');
-        $books = $doc->getElementsByTagName("blogentry");
-        //print_r($books);
-        $array = array();
-        $k = 0;
-
-        foreach ($books as $book) {
-            //echo $book->getElementsByTagName( "date" )->item(0)->nodeValue;
-            $array['blog_entries'][$k]["title"] = $book->getElementsByTagName("title")->item(0)->nodeValue;
-            $array['blog_entries'][$k]["body"] = str_replace(array('[', ']'), array('<', '>'), $book->getElementsByTagName("body")->item(0)->nodeValue);
-            $array['blog_entries'][$k]["date"] = "(" . $book->getElementsByTagName("date")->item(0)->nodeValue . ")";
-            $array['blog_entries'][$k]["date_unicode"] = $book->getElementsByTagName("date_unicode")->item(0)->nodeValue;
-            $array['blog_entries'][$k]["sender_id"] = "sended by " . $book->getElementsByTagName("sender_id")->item(0)->nodeValue;
-            $array['blog_entries'][$k]["id"] = $book->getElementsByTagName("id")->item(0)->nodeValue;
-            if ($array['blog_entries'][$k]["id"] == $id) {
-                $this->parser->parse('blogentry.php', $array);
+        $a=$this->xmloperator->xml_sql("blog_entries.xml", "blogentry","select id,title,body,date,sender_id");
+        foreach ($a as $key => $value) {
+            $a[$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $a[$key]["body"]);
+            if($a[$key]["id"]==$id)
+            {
+                $array['blog_entries'][0]=$a[$key];
                 break;
             }
-            //$k++;
         }
-
-        //$this->parser->parse('welcome_message.php',$array);
+        $this->parser->parse('welcome_message.php',$array);
     }
 
 }
