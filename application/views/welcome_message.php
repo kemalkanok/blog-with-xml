@@ -8,6 +8,7 @@
 	function send_article()
 	{
 		alert($("#entry_title").val());
+                alert($("#entry_body").val());
 	}
 	$(document).ready(function(){
 			var count = 1;

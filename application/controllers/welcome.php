@@ -27,11 +27,12 @@ class Welcome extends CI_Controller {
     }
 
     public function index() {
-
+        $array=array();
         //array["blog_entries"] = $this->xmloperator->read("blog_entries.xml", "blogentry", array("id", "title", "body", "date", "sender_id"));
-        $array["blog_entries"]=$this->xmloperator->xml_sql("blog_entries.xml", "blogentry","select id,title,body,date,sender_id");
+        $array["blog_entries"]=$this->xmloperator->read_all("blog_entries.xml", "blogentry");
+        $this->xmloperator->read_all("blog_entries.xml","blogentry");
         foreach ($array["blog_entries"] as $key => $value) {
-            $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $array["blog_entries"][$key]["body"]);
+            $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
         }
         $this->parser->parse('welcome_message.php', $array);
         //print_r($array);
@@ -41,47 +42,36 @@ class Welcome extends CI_Controller {
     public function operations($option = null) {
         switch ($option) {
             case 'add_page_get_contents':
-                echo 'Add Page:
-					<br/>
-					Title:<br/>
-					<input id="entry_title" type="text" style="width:95%" />
-					<br/>
-					Body:<br/>
-					<textarea id="entry_body" style="width:95%;height: 300px;"></textarea>
-					<br/>
-					<input type="button" onclick="javascript:send_article();" id="entry_send" value="Send Article"/>';
+                echo '
+                    Add Page:
+                    <br/>
+                    Title:<br/>
+                    <input id="entry_title" type="text" style="width:95%" />
+                    <br/>
+                    Body:<br/>
+                    <textarea id="entry_body" style="width:95%;height: 300px;"></textarea>
+                    <br/>
+                    <input type="button" onclick="javascript:send_article();" id="entry_send" value="Send Article"/>
+                    ';
                 break;
             case 'login_prompt':
                 //echo 1;
-                
-                $doc = new DOMDocument();
-                $doc->load('users.xml');
-                $books = $doc->getElementsByTagName("user");
-                //print_r($books);
-                $array = array();
-                $k = 0;
-                foreach ($books as $book) {
-                    //echo $book->getElementsByTagName( "date" )->item(0)->nodeValue;
-                    $array[$k]["id"] = $book->getElementsByTagName("id")->item(0)->nodeValue;
-                    $array[$k]["username"] = $book->getElementsByTagName("username")->item(0)->nodeValue;
-                    $array[$k]["password"] = $book->getElementsByTagName("password")->item(0)->nodeValue;
-                    $array[$k]["level"] = $book->getElementsByTagName("level")->item(0)->nodeValue;
-                    //echo $array[$k]["username"] ." ". $array[$k]["password"];
-                    if ($_POST['username'] == $array[$k]["username"] && $_POST['password'] == $array[$k]["password"]) {
-                        $array = array(
-                            'id' => $array[$k]["id"],
-                            'username' => $array[$k]["username"],
-                            'level' => $array[$k]["level"]
+                $array=$this->xmloperator->read_all("users.xml", "user");
+                foreach ($array as $value) {
+                     if ($_POST['username'] == $value["username"] && $_POST['password'] == $value["password"])
+                     {
+                         $array = array(
+                            'id' => $value["id"],
+                            'username' => $value["username"],
+                            'level' => $value["level"]
                         );
                         $this->session->set_userdata($array);
                         die("1"); //login correct
-                    }
-                    $k++;
+                     }
                 }
-                echo 0; //login fail
+                die("0");//login fail
                 break;
             case 'log_check':
-
                 if ($this->session->userdata('id') != "")
                     echo 1;
                 else
@@ -93,9 +83,9 @@ class Welcome extends CI_Controller {
     public function blogentry($id) {
 
         
-        $a=$this->xmloperator->xml_sql("blog_entries.xml", "blogentry","select id,title,body,date,sender_id");
+        $a=$this->xmloperator->read_all("blog_entries.xml", "blogentry");
         foreach ($a as $key => $value) {
-            $a[$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $a[$key]["body"]);
+            $a[$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
             if($a[$key]["id"]==$id)
             {
                 $array['blog_entries'][0]=$a[$key];
