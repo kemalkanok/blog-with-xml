@@ -64,6 +64,10 @@ class xmloperator {
           //echo  $this->array_to_xml($table, $array);
           file_put_contents($filename, $this->array_to_xml($table, $array));
     }
+    public function insert($filename, $table, array $values , $ai=null)
+    {
+        
+    }
     function array_to_xml($item_name,array $datas)
     {
         $str="";

@@ -28,9 +28,7 @@ class Welcome extends CI_Controller {
 
     public function index() {
         $array = array();
-        $this->xmloperator->update("blog_entries.xml", "blogentry",  array('title'=>'whooo') , "id" , 1);
         $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
-        print_r($this->xmloperator->read_all("blog_entries.xml", "blogentry"));
         foreach ($array["blog_entries"] as $key => $value) {
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
         }
