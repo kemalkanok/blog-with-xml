@@ -4,14 +4,16 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class xmloperator {
-    
-    private function read($filename, $table,array $ids, $limit = null) {
+//@todo:ekleme ve silme eklenicek.
+    var $element_name="";
+    public function read_with_fields($filename, $table, array $ids, $limit = null) {
         $doc = new DOMDocument();
         $doc->load($filename);
         $books = $doc->getElementsByTagName($table);
         $k = 0;
         $array = array();
         foreach ($books as $book) {
+            $this->element_name=$book->nodeName;
             foreach ($ids as $value) {
                 $array[$k][$value] = $book->getElementsByTagName($value)->item(0)->nodeValue;
             }
@@ -23,50 +25,60 @@ class xmloperator {
         return $array;
     }
     public function read_all($filename, $table) {
-        
         $dom = new DOMDocument;
         $dom->load($filename);
         $books = $dom->getElementsByTagName($table);
-        $k=0;
-        $array=array();
+        $k = 0;
+        $array = array();
+        
         foreach ($books as $book) {
-            foreach ($book->childNodes as  $value) {
-                if($value->nextSibling!=null)
-                {
-                    $s1=str_replace ("#text", "", $value->nextSibling->nodeName);
-                    $s2=$value->nextSibling->textContent;
-                    //if(strlen($value->nextSibling->nodeName) !=0 && strlen($value->nextSibling->textContent) != 0)
-                    if(strlen($s1)!=0 && strlen($s2)!=0)
-                    {
-                        //echo str_replace ("#text", "", $value->nextSibling->nodeName).",";
-                        $array[$k][$s1]=$s2;
-                        //$a2[$k][$l]= $value->nextSibling->textContent;
-                        //echo str_replace ("#text", "", $value->nextSibling->nodeName)."|".  $value->nextSibling->textContent;
+            $this->element_name=$book->nodeName;
+            foreach ($book->childNodes as $value) {
+                if ($value->nextSibling != null) {
+                    $s1 = str_replace("#text", "", $value->nextSibling->nodeName);
+                    $s2 = $value->nextSibling->textContent;
+                    if (strlen($s1) != 0 && strlen($s2) != 0) {
+                        $array[$k][$s1] = $s2;
                     }
                 }
             }
             $k++;
-}
-return $array;
-    }
-    
-    
-//    public function update($filename, $table,array $ids, $limit = null) {
-//        
-//    }
-    public function xml_sql($filename,$table,$string)
-    {
-        
-        $str=explode(' ', $string);
-        if( strtolower($str[0])=="select" )
-        {
-            $i=1;
-            while($str[$i]=="")
-                $i++;
-            $str[$i]=  explode(",", $str[$i]);
-            return $this->read($filename,$table,$str[$i]);
-            
         }
+        return $array;
+    }
+
+    public function update($filename, $table, array $changes , $where_field , $where_value ) {
+        $array = $this->read_all($filename, $table);
+        foreach ($array as $key=>$value) {
+                if($value[$where_field] == $where_value)
+                {
+                    foreach ($changes as $k=>$v) {
+                        $array[$key][$k]=$v;
+                    }
+                }
+        }
+//        $open = fopen($filename,"w+");
+//        fwrite($open,$this->array_to_xml($table, $array));
+//        fclose($open);
+//        
+          //echo  $this->array_to_xml($table, $array);
+          file_put_contents($filename, $this->array_to_xml($table, $array));
+    }
+    function array_to_xml($item_name,array $datas)
+    {
+        $str="";
+        $str.="<"."xxx".">".PHP_EOL;
+         foreach ($datas as $value) {
+             $str.="    <".$item_name.">".PHP_EOL;
+             foreach ($value as $key => $val) {
+                 $str.="        <".$key.">";
+                 $str.=$val;
+                 $str.="</".$key.">".PHP_EOL;
+             }
+             $str.="    </".$item_name.">".PHP_EOL;
+         }
+        $str.="</"."xxx".">".PHP_EOL;
+        return $str;
     }
 }
 

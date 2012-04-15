@@ -27,16 +27,16 @@ class Welcome extends CI_Controller {
     }
 
     public function index() {
-        $array=array();
-        //array["blog_entries"] = $this->xmloperator->read("blog_entries.xml", "blogentry", array("id", "title", "body", "date", "sender_id"));
-        $array["blog_entries"]=$this->xmloperator->read_all("blog_entries.xml", "blogentry");
-        $this->xmloperator->read_all("blog_entries.xml","blogentry");
+        $array = array();
+        $this->xmloperator->update("blog_entries.xml", "blogentry",  array('title'=>'whooo') , "id" , 1);
+        $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
+        print_r($this->xmloperator->read_all("blog_entries.xml", "blogentry"));
         foreach ($array["blog_entries"] as $key => $value) {
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
         }
+        //print_r($array["blog_entries"] );
         $this->parser->parse('welcome_message.php', $array);
-        //print_r($array);
-        //@todo:ekleme ve silme eklenicek.
+        
     }
 
     public function operations($option = null) {
@@ -56,20 +56,19 @@ class Welcome extends CI_Controller {
                 break;
             case 'login_prompt':
                 //echo 1;
-                $array=$this->xmloperator->read_all("users.xml", "user");
+                $array = $this->xmloperator->read_all("users.xml", "user");
                 foreach ($array as $value) {
-                     if ($_POST['username'] == $value["username"] && $_POST['password'] == $value["password"])
-                     {
-                         $array = array(
+                    if ($_POST['username'] == $value["username"] && $_POST['password'] == $value["password"]) {
+                        $array = array(
                             'id' => $value["id"],
                             'username' => $value["username"],
                             'level' => $value["level"]
                         );
                         $this->session->set_userdata($array);
                         die("1"); //login correct
-                     }
+                    }
                 }
-                die("0");//login fail
+                die("0"); //login fail
                 break;
             case 'log_check':
                 if ($this->session->userdata('id') != "")
@@ -82,17 +81,19 @@ class Welcome extends CI_Controller {
 
     public function blogentry($id) {
 
-        
-        $a=$this->xmloperator->read_all("blog_entries.xml", "blogentry");
+        $array['blog_entries'][0]=array();
+        $a = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
         foreach ($a as $key => $value) {
             $a[$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
-            if($a[$key]["id"]==$id)
-            {
-                $array['blog_entries'][0]=$a[$key];
+            if ($a[$key]["id"] == $id) {
+                $array['blog_entries'][0] = $a[$key];
                 break;
             }
         }
-        $this->parser->parse('welcome_message.php',$array);
+        if($array['blog_entries'][0]!=null)
+        $this->parser->parse('welcome_message.php', $array);
+        else
+            echo "Not Found";
     }
 
 }
