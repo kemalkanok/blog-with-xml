@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>Welcome to xml-blog</title>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
+        <base href="http://localhost/denemeler/blog-with-xml/"/>
 	<script type="text/javascript">
 	function send_article()
 	{
