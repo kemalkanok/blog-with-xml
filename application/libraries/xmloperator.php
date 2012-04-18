@@ -66,7 +66,19 @@ class xmloperator {
     }
     public function insert($filename, $table, array $values , $ai=null)
     {
-        
+        if($ai==null)
+        {
+             $array=$this->read_all($filename,$table);
+             $array["_add1"]=$values;
+             file_put_contents($filename, $this->array_to_xml($table, $array));
+        }
+        else
+        {
+             $array=$this->read_all($filename,$table);
+             $array["_add1"]=$values;
+             $array["_add1"][$ai]=count($this->read_all($filename,$table))+1;
+             file_put_contents($filename, $this->array_to_xml($table, $array));
+        }
     }
     function array_to_xml($item_name,array $datas)
     {
@@ -86,4 +98,4 @@ class xmloperator {
     }
 }
 
-/* End of file Someclass.php */
+/* End of class xmloperator.php */
