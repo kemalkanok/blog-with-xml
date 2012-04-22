@@ -2,10 +2,19 @@
 
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
-
-class xmloperator {
+interface  xmlfunctions
+{
+    public function read_with_fields($filename, $table, array $ids, $limit = null);/*asds*/
+    public function read_all($filename, $table);
+    public function update($filename, $table, array $changes , $where_field , $where_value );
+    public function insert($filename, $table, array $values , $ai=null);
+    public function delete($filename, $table,$id);
+    function array_to_xml($item_name,array $datas);
+    
+}
+class xmloperator implements xmlfunctions {
 //@todo:ekleme ve silme eklenicek.
-    var $element_name="";
+    
     public function read_with_fields($filename, $table, array $ids, $limit = null) {
         $doc = new DOMDocument();
         $doc->load($filename);
@@ -46,7 +55,6 @@ class xmloperator {
         }
         return $array;
     }
-
     public function update($filename, $table, array $changes , $where_field , $where_value ) {
         $array = $this->read_all($filename, $table);
         foreach ($array as $key=>$value) {
@@ -57,15 +65,9 @@ class xmloperator {
                     }
                 }
         }
-//        $open = fopen($filename,"w+");
-//        fwrite($open,$this->array_to_xml($table, $array));
-//        fclose($open);
-//        
-          //echo  $this->array_to_xml($table, $array);
           file_put_contents($filename, $this->array_to_xml($table, $array));
     }
-    public function insert($filename, $table, array $values , $ai=null)
-    {
+    public function insert($filename, $table, array $values , $ai=null){
         if($ai==null)
         {
              $array=$this->read_all($filename,$table);
@@ -80,8 +82,8 @@ class xmloperator {
              file_put_contents($filename, $this->array_to_xml($table, $array));
         }
     }
-    function array_to_xml($item_name,array $datas)
-    {
+    public function delete($filename, $table, $id) {}
+    function array_to_xml($item_name,array $datas){
         $str="";
         $str.="<"."xxx".">".PHP_EOL;
          foreach ($datas as $value) {

@@ -17,7 +17,6 @@ class Welcome extends CI_Controller {
         foreach ($array["blog_entries"] as $key => $value) {
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
         }
-        echo count($array["blog_entries"]);
         $this->parser->parse('welcome_message.php', $array);
         
     }
