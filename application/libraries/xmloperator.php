@@ -95,6 +95,16 @@ class xmloperator implements xmlfunctions {
         file_put_contents($filename, $this->array_to_xml($table, $new_array));
         //print_r($new_array);
     }
+    public function search_equal_field(array $datas , $field , $value)
+    {
+        foreach ($datas as   $val) {
+            if($val[$field] == $value)
+            {
+                return $val;
+            }
+        }
+        return null;
+    }
     function array_to_xml($item_name,array $datas){
         $str="";
         $str.="<"."xxx".">".PHP_EOL;
