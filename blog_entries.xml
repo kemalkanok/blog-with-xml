@@ -1,4 +1,5 @@
-<xxx>
+
+<blog>
     <blogentry>
         <id>1</id>
         <title>who knows</title>
@@ -15,4 +16,7 @@
         <date_unicode>6051619864</date_unicode>
         <sender_id>13 </sender_id>
     </blogentry>
-</xxx>
+    <rule>
+        <ai>id</ai>
+    </rule>
+</blog>

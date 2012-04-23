@@ -8,7 +8,7 @@ interface  xmlfunctions
     public function read_all($filename, $table);
     public function update($filename, $table, array $changes , $where_field , $where_value );
     public function insert($filename, $table, array $values , $ai=null);
-    public function delete($filename, $table,$id);
+    public function delete($filename, $table,$id_field , $id_value);
     function array_to_xml($item_name,array $datas);
     
 }
@@ -82,7 +82,19 @@ class xmloperator implements xmlfunctions {
              file_put_contents($filename, $this->array_to_xml($table, $array));
         }
     }
-    public function delete($filename, $table, $id) {}
+    public function delete($filename, $table, $id_field, $id_value) {
+        $read_array=$this->read_all($filename, $table);
+        $new_array=array();
+        foreach ($read_array as $key=>$value) {
+            if($value[$id_field] != $id_value)
+            {
+                $new_array[$value[$id_field]]=$read_array[$key];
+            }
+            
+        }
+        file_put_contents($filename, $this->array_to_xml($table, $new_array));
+        //print_r($new_array);
+    }
     function array_to_xml($item_name,array $datas){
         $str="";
         $str.="<"."xxx".">".PHP_EOL;
@@ -98,6 +110,8 @@ class xmloperator implements xmlfunctions {
         $str.="</"."xxx".">".PHP_EOL;
         return $str;
     }
+
+    
 }
 
 /* End of class xmloperator.php */
