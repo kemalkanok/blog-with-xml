@@ -1,3 +1,8 @@
+<Files ~ "\.(xml)$">
+  order allow,deny
+  deny from all
+</Files>
+
 rewriteEngine on
 
 RewriteCond %{REQUEST_FILENAME} !-f
