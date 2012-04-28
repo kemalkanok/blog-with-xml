@@ -15,16 +15,12 @@ class Welcome extends CI_Controller {
         $array = array();
         $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
         $users=$this->xmloperator->read_all("users.xml", "user");
-        //$a= $this->xmloperator->search_equal_field($users , "id" , (int) );//$array["blog_entries"][2]["sender_id"]);
-        //echo $a["username"];
-        //print_r($users);
-        //echo $this->xmloperator->search_equal_field($users,"")
         foreach ($array["blog_entries"] as $key => $value) {
             //echo $array["blog_entries"][$key]["sender_id"];
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
             
-            $a=$this->xmloperator->search_equal_field($users , "id" , (int)$array["blog_entries"][$key]["sender_id"]);
-            $array["blog_entries"][$key]["sender_id"]=$a["username"];
+            $a=$this->xmloperator->search_equal_field($users , "id" , $array["blog_entries"][$key]["sender_id"]);
+            $array["blog_entries"][$key]["sender_id"]="sended by ".$a[0]["username"];
                 
             
         }
@@ -74,16 +70,13 @@ class Welcome extends CI_Controller {
 
     public function blogentry($id) {
 
-        $array['blog_entries'][0]=array();
+        $array['blog_entries']=array();
         $a = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
-        $array['blog_entries'][0]=$this->xmloperator->search_equal_field($a , "id" , $id);
-//        foreach ($a as $key => $value) {
-//            $a[$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
-//            if ($a[$key]["id"] == $id) {
-//                $array['blog_entries'][0] = $a[$key];
-//                break;
-//            }
-//        }
+        $array['blog_entries']=$this->xmloperator->search_equal_field($a , "id" , 1);
+        foreach ($array['blog_entries'] as $key=>$value) {
+             $array['blog_entries'][$key]["body"]=str_replace(array("[", "]"), array("<", ">"), $value["body"]);
+             
+        }
         if($array['blog_entries'][0]!=null)
         $this->parser->parse('welcome_message.php', $array);
         else

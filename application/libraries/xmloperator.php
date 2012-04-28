@@ -9,7 +9,9 @@ interface  xmlfunctions
     public function update($filename, $table, array $changes , $where_field , $where_value );
     public function insert($filename, $table, array $values , $ai=null);
     public function delete($filename, $table,$id_field , $id_value);
+    public function inner_join($filename1, $table1,$id_field1 , $filename2 , $table2 , $id_field2);
     function array_to_xml($item_name,array $datas);
+    
     
 }
 class xmloperator implements xmlfunctions {
@@ -97,13 +99,17 @@ class xmloperator implements xmlfunctions {
     }
     public function search_equal_field(array $datas , $field , $value)
     {
-        foreach ($datas as   $val) {
+        $value=(int)$value;
+        $array  = array();
+        $k=0;
+        foreach ($datas as $val) {
             if($val[$field] == $value)
             {
-                return $val;
+                $array[$k]=$val;
+                $k++;
             }
         }
-        return null;
+        return $array;
     }
     function array_to_xml($item_name,array $datas){
         $str="";
@@ -119,6 +125,10 @@ class xmloperator implements xmlfunctions {
          }
         $str.="</"."xxx".">".PHP_EOL;
         return $str;
+    }
+
+    public function inner_join($filename1, $table1, $id_field1, $filename2, $table2, $id_field2) {
+        
     }
 
     

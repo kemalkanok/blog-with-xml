@@ -62,7 +62,10 @@
 					}, 750 );
 					$("#panel_menu").fadeTo(750,1);
 					$(".editblog").fadeTo(750,1);
-					$("#area").fadeTo(750,1);
+                                        $("#area").fadeTo(750,1,function()
+                                        {
+                                            $("#area").show();
+                                        });
 					$(this).html('-');
            		}
            		else
@@ -75,7 +78,10 @@
 					}, 1500 );
 					$("#panel_menu").fadeTo(750,0);
 					$(".editblog").fadeTo(750,0);
-					$("#area").fadeTo(750,0);
+					$("#area").fadeTo(750,0,function(){
+                                            $("#area").hide();
+                                        });
+                                        
 					$(this).html('+');
 				}
            		count++;
