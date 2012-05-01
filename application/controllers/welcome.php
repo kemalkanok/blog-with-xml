@@ -15,7 +15,7 @@ class Welcome extends CI_Controller {
 
 
         $array = array();
-        $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
+        $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry", 10);
         $array["base"]=$_SERVER['SERVER_NAME'];
         $users=$this->xmloperator->read_all("users.xml", "user");
         foreach ($array["blog_entries"] as $key => $value) {

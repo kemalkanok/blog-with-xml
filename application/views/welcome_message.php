@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>Welcome to xml-blog</title>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-        <base href="{base}/projeler/blog-with-xml/"/>
+        <base href="http://{base}/projeler/blog-with-xml/"/>
 	<script type="text/javascript">
 	function send_article()
 	{
@@ -257,8 +257,6 @@
 			</div>
 	{/blog_entries}
 		</div>
-		
-		
 	</div>
 	<p class="footer"> Page rendered in <strong>{elapsed_time}</strong> seconds</p>
 		<span id="loginfooter">Blog With Xml <a href="javascript:;" id="loginFormLink">login</a></span>
