@@ -6,29 +6,21 @@ if (!defined('BASEPATH'))
 class Welcome extends CI_Controller {
     public function __construct() {
         parent::__construct();
-        $this->load->library("xmloperator");
-        $this->load->library('parser');
         
     }
 
     public function index() {
-
-
+        
         $array = array();
-        $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry", 10);
+        $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml",null,10);
         $array["base"]=$_SERVER['SERVER_NAME'];
-        $users=$this->xmloperator->read_all("users.xml", "user");
+        $users=$this->xmloperator->read_all("users.xml","row" );
         foreach ($array["blog_entries"] as $key => $value) {
-            //echo $array["blog_entries"][$key]["sender_id"];
             $array["blog_entries"][$key]["body"] = str_replace(array("[", "]"), array("<", ">"), $value["body"]);
-            
             $a=$this->xmloperator->search_equal_field($users , "id" , $array["blog_entries"][$key]["sender_id"]);
             $array["blog_entries"][$key]["sender_id"]="sended by ".$a[0]["username"];
-                
-            
         }
         $this->parser->parse('welcome_message.php', $array);
-        
     }
 
     public function operations($option = null) {
@@ -72,14 +64,12 @@ class Welcome extends CI_Controller {
     }
 
     public function blogentry($id) {
-
         $array['blog_entries']=array();
         $array["base"]=$_SERVER['SERVER_NAME'];
         $a = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
         $array['blog_entries']=$this->xmloperator->search_equal_field($a , "id" , 1);
         foreach ($array['blog_entries'] as $key=>$value) {
              $array['blog_entries'][$key]["body"]=str_replace(array("[", "]"), array("<", ">"), $value["body"]);
-             
         }
         if($array['blog_entries'][0]!=null)
         $this->parser->parse('welcome_message.php', $array);
