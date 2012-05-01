@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>Welcome to xml-blog</title>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-        <base href="http://localhost/denemeler/blog-with-xml/"/>
+        <base href="{base}/projeler/blog-with-xml/"/>
 	<script type="text/javascript">
 	function send_article()
 	{
@@ -17,7 +17,7 @@
 			$("#loginFormLink").click(function(){
 				$("#login").fadeTo("slow",1);
 			});
-			$.post("operations/log_check", { username: $("#LoginUsername").val() , password: $("#LoginPassword").val() },
+			$.post("operations/log_check",
 	                    function(data) {
 	                        if(data=="1")
 	                        {
@@ -34,6 +34,11 @@
 	                        	alert("login complete");
 	                        	$("#admin_panel").fadeTo(750,1);
 	                        	$("#login").fadeTo(750,0);
+	                        }
+	                        else
+	                        {
+
+	                        	alert("shiy");
 	                        }
 	                    });
            });

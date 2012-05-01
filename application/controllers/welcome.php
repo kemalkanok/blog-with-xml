@@ -4,16 +4,19 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
-
     public function __construct() {
         parent::__construct();
         $this->load->library("xmloperator");
         $this->load->library('parser');
+        
     }
 
     public function index() {
+
+
         $array = array();
         $array["blog_entries"] = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
+        $array["base"]=$_SERVER['SERVER_NAME'];
         $users=$this->xmloperator->read_all("users.xml", "user");
         foreach ($array["blog_entries"] as $key => $value) {
             //echo $array["blog_entries"][$key]["sender_id"];
@@ -43,7 +46,7 @@ class Welcome extends CI_Controller {
                     <input type="button" onclick="javascript:send_article();" id="entry_send" value="Send Article"/>
                     ';
                 break;
-            case 'login_prompt':
+            case 'login_prompt':  
                 //echo 1;
                 $array = $this->xmloperator->read_all("users.xml", "user");
                 foreach ($array as $value) {
@@ -71,6 +74,7 @@ class Welcome extends CI_Controller {
     public function blogentry($id) {
 
         $array['blog_entries']=array();
+        $array["base"]=$_SERVER['SERVER_NAME'];
         $a = $this->xmloperator->read_all("blog_entries.xml", "blogentry");
         $array['blog_entries']=$this->xmloperator->search_equal_field($a , "id" , 1);
         foreach ($array['blog_entries'] as $key=>$value) {
