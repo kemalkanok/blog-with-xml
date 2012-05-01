@@ -13,7 +13,7 @@ interface  xmlfunctions
     public function inner_join($filename1, $table1,$id_field1 , $filename2 , $table2 , $id_field2);
     public function create_table($filename, array $ids);
     public function remove_table($filename);
-    public function array_to_xml($item_name,array $datas);
+    public function array_to_xml($item_name,array $datas); 
 }
 class xmloperator implements xmlfunctions {
 
