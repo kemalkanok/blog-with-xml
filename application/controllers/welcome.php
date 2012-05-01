@@ -40,7 +40,7 @@ class Welcome extends CI_Controller {
                 break;
             case 'login_prompt':  
                 //echo 1;
-                $array = $this->xmloperator->read_all("users.xml", "user");
+                $array = $this->xmloperator->read_all("users.xml");
                 foreach ($array as $value) {
                     if ($_POST['username'] == $value["username"] && $_POST['password'] == $value["password"]) {
                         $array = array(
