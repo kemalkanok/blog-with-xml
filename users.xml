@@ -1,8 +1,8 @@
 <users>
     <row>
         <id>13</id>
-        <username>pcycho13</username>
-        <password>526@dpooly</password>
+        <username>admin</username>
+        <password>admin</password>
         <level>0</level><!--0 means god,1 measn mod , 2 means user-->
     </row>
 </users>
