@@ -18,7 +18,7 @@ class Welcome extends CI_Controller {
 
     public function blogentry($id) {
         $data = $this->blog->entry($id);
-        $this->parser->parse('welcome_message.php', $data);   
+        $this->parser->parse('welcome_entry.php', $data);   
     }
 
 }

@@ -4,11 +4,11 @@
 	<meta charset="utf-8">
 	<title>Welcome to xml-blog</title>
 	<base href="http://localhost:81/blog-with-xml/blog-with-xml/">
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>	
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/blog.js"></script>
-	
+
 </head>
 <body>
 	<div class="modal logout_form hide fade">
@@ -62,7 +62,7 @@
 		
 		<div class="row">
 			{blog_entries}
-	        <div class="span3 well" id="blog_entry_{id}">
+	        <div class="well" style="margin-left: 20px;" id="blog_entry_{id}">
 	          <h2>{title}</h2>
 	          <p>
 	          	<span> {sender_id}</span>
@@ -74,9 +74,9 @@
 	        </div>
 	        {/blog_entries}
     	</div>
-    	<div class="well  navbar-fixed-bottom">
-			<a href="#" class="show login">Login</a>
-			<a href="#" class="hide admin logout">Logout</a>
+    	<div class="well navbar-fixed-bottom">
+			<a href="javascript:;" class="show login">Login</a>
+			<a href="javascript:;" class="hide admin logout">Logout</a>
 		</div>
 	</div>
 	
